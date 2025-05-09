@@ -10,11 +10,20 @@ type DataTableProps<T> = {
     onRowClick?: (row: T) => void
 }
 
-export function DataTable<T extends { id: number | string }>({
+export function DataTable<T extends Record<string, any>>({
     columns,
     data,
     onRowClick,
 }: DataTableProps<T>) {
+
+    // Fix the view for the table and style it with Tailwind
+
+    // Implement responsivnes and different view for table on mobile (switchable and keeping persistance via local storage)
+
+    // Implement state managment when returning from issue
+
+    // Check if some sort of global theme will be needed along with Tailwind
+
     return (
         <table role="table" className="w-full border-collapse">
             <thead>

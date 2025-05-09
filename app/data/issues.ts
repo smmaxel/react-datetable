@@ -10,6 +10,10 @@ export type Issue = {
     screenshot: string
 }
 
+export type IssueTableRow = {
+    no: number
+} & Pick<Issue, 'id' | 'issueType' | 'severity' | 'component' | 'selector' | 'url'> 
+
 export const fetchIssues = (): Promise<Issue[]> =>
     new Promise((resolve) => {
         setTimeout(() => {

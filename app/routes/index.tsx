@@ -1,27 +1,24 @@
 import { useEffect, useState } from "react";
-import { type Issue, fetchIssues } from "~/data/issues";
+import { type Issue, fetchIssues, type IssueTableRow } from "~/data/issues";
 import { useNavigate } from "react-router";
 import { DataTable } from "~/components/DataTable/DataTable";
-
-// export function meta({}: Route.MetaArgs) {
-//   return [
-//     { title: "New React Router App" },
-//     { name: "description", content: "Welcome to React Router!" },
-//   ];
-// }
+import { mapIssueToTableRows } from "~/utils/issueMapper";
 
 export default function Home() {
-  const [issues, setIssues] = useState<Issue[]>([])
+  const [issues, setIssues] = useState<IssueTableRow[]>([])
   const navigate = useNavigate()
 
   useEffect(() => {
-    fetchIssues().then(setIssues)
+    fetchIssues().then((data) => setIssues(mapIssueToTableRows(data)))
   }, [])
 
   const columns = [
-    { header: 'Type', accessor: 'issueType' },
-    { header: 'Severity', accessor: 'severity' },
-    { header: 'Component', accessor: 'component' },
+    { header: 'NO', accessor: 'no' },
+    { header: 'ISSUE TYPE', accessor: 'issueType' },
+    { header: 'SEVERITY', accessor: 'severity' },
+    { header: 'COMPONENT', accessor: 'component' },
+    { header: 'SELECTOR', accessor: 'selector' },
+    { header: 'URL', accessor: 'url' },
   ] as const
 
   return (
