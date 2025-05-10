@@ -17,8 +17,8 @@ export default function Home() {
     { header: 'ISSUE TYPE', accessor: 'issueType' },
     { header: 'SEVERITY', accessor: 'severity' },
     { header: 'COMPONENT', accessor: 'component' },
-    { header: 'SELECTOR', accessor: 'selector' },
-    { header: 'URL', accessor: 'url' },
+    { header: 'SELECTOR', accessor: 'selector', filterable: true },
+    { header: 'URL', accessor: 'url', filterable: true },
   ] as const
 
   return (
@@ -27,7 +27,7 @@ export default function Home() {
       <DataTable
         columns={columns}
         data={issues}
-        onRowClick={(issue) => navigate(`/issues/${issue.id}`)}  
+        onRowClick={(issue) => navigate(`/issues/${issue.id}`)}
       />
     </main>
   )
