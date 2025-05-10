@@ -85,7 +85,7 @@ export function DataTable<T extends Record<string, any>>({
                 }`}
               onClick={() => toggleSort(col.accessor)}
             >
-              <div className="flex items-center justify-center gap-2">
+              <div className="flex items-center justify-center gap-2 select-none">
                 <div className="flex items-center gap-1">
                   <span>{col.header}</span>
                   <span className="text-sm">
@@ -100,8 +100,7 @@ export function DataTable<T extends Record<string, any>>({
                 {col.filterable && (
                   <input
                     type="text"
-                    className=" text-cs p-1 bg-white rounded-full"
-                    placeholder={`Search ${col.header}`}
+                    className=" text-black text-xs p-1 bg-white rounded-[0.5rem]"
                     value={filters[col.accessor] || ''}
                     onClick={(e) => e.stopPropagation()}
                     onChange={(e) => updateFilter(col.accessor, e.target.value)}
