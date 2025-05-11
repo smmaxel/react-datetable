@@ -1,7 +1,7 @@
 export type Issue = {
     id: number
-    issueType: string
-    severity: string
+    issueType: 'Interactable Role' | 'Accessible Name' | 'Keyboard Accessible' | 'Color Contrast'
+    severity: 'Critical' | 'Minor'
     component: string
     selector: string
     url: string
@@ -12,7 +12,7 @@ export type Issue = {
 
 export type IssueTableRow = {
     no: number
-} & Pick<Issue, 'id' | 'issueType' | 'severity' | 'component' | 'selector' | 'url'> 
+} & Pick<Issue, 'id' | 'issueType' | 'severity' | 'component' | 'selector' | 'url'>
 
 export const fetchIssues = (): Promise<Issue[]> =>
     new Promise((resolve) => {

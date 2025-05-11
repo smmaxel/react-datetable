@@ -1,4 +1,5 @@
-import { useEffect, useMemo, useState } from "react"
+import { useEffect, useMemo, useRef, useState } from "react"
+import { useIssueContext } from "~/context/IssueContext"
 
 type Column<T> = {
   header: string
@@ -17,6 +18,9 @@ export function DataTable<T extends Record<string, any>>({
   data,
   onRowClick,
 }: DataTableProps<T>) {
+  const { state } = useIssueContext()
+  const selectedId = state.selectedIssueId
+
   const [sort, setSort] = useState<{
     column: keyof T
     direction: 'asc' | 'desc'
@@ -26,6 +30,23 @@ export function DataTable<T extends Record<string, any>>({
   })
 
   const [filters, setFilters] = useState<Partial<Record<keyof T, string>>>({})
+
+  const selectedRowRef = useRef<HTMLButtonElement>(null)
+
+  // check do we need a theme file for adding all of the different stylings (check Tailwind best practices)
+
+  // implement useState along with localStorage for different view
+
+  // implement state along with localStorage for high contrast mode
+
+  // set everything to rems so that we can change things globaly (maybe even differnt font size)
+
+  // check everything as a screen reader 
+
+  // check how tabindex is working with forward / backwards navigation
+
+  // unit test everything that could be tested
+
 
   const toggleSort = (column: keyof T) => {
     setSort((prev) => {
@@ -71,8 +92,10 @@ export function DataTable<T extends Record<string, any>>({
   }, [data, filters, sort])
 
   useEffect(() => {
-    console.log('sort', sort)
-  }, [sort])
+    if (selectedRowRef.current) {
+      selectedRowRef.current.focus()
+    }
+  }, [selectedId])
 
   return (
     <table role="table" className="w-full border-collapse text-center">
@@ -113,22 +136,41 @@ export function DataTable<T extends Record<string, any>>({
       </thead>
 
       <tbody className=" bg-white text-[#121516] text-[12px] font-serif place-self-center">
-        {filteredAndSortedData.map((row) => (
-          <tr
-            key={row.id}
-            role="row"
-            tabIndex={0}
-            className="cursor-pointer hover:bg-gray-100 h-[45px] focus:outline focus:ring"
-            onClick={() => onRowClick?.(row)}
-            onKeyDown={(e) => {
-              if (e.key === "Enter") onRowClick?.(row)
-            }}
-          >
-            {columns.map((col) => (
-              <td key={String(col.accessor)}>{String(row[col.accessor])}</td>
-            ))}
-          </tr>
-        ))}
+        {filteredAndSortedData.map((row) => {
+          const isSelected = row.id === selectedId
+          return (
+            <tr
+              key={row.id}
+              role="row"
+              tabIndex={0}
+              aria-selected={selectedId === row.id}
+              className={selectedId === row.id ? 'bg-blue-100 outline outline-2 h-[45px] outline-blue-500' : 'cursor-pointer hover:bg-gray-100 h-[45px] focus:outline focus:ring'}
+              onClick={() => onRowClick?.(row)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") onRowClick?.(row)
+              }}
+            >
+              {columns.map((col, index) => {
+                const isFirst = index === 0
+                const content = String(row[col.accessor])
+
+                return (
+                  <td key={String(col.accessor)}>
+                    {isFirst ? (
+                      <button
+                        ref={isSelected ? selectedRowRef : null}
+                        tabIndex={0}
+                        className="w-full text-left focus:outline-none"
+                      >{content}</button>
+                    ): (
+                      content
+                    )}
+                  </td>
+                )
+              })}
+            </tr>
+          )
+        })}
       </tbody>
     </table>
   )
