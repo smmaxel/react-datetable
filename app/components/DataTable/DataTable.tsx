@@ -31,7 +31,7 @@ export function DataTable<T extends Record<string, any>>({
 
   const [filters, setFilters] = useState<Partial<Record<keyof T, string>>>({})
 
-  const selectedRowRef = useRef<HTMLButtonElement>(null)
+  const selectedRowRef = useRef<HTMLTableRowElement>(null)
 
   // check do we need a theme file for adding all of the different stylings (check Tailwind best practices)
 
@@ -123,6 +123,7 @@ export function DataTable<T extends Record<string, any>>({
                 {col.filterable && (
                   <input
                     type="text"
+                    aria-label={`filter ${String(col.accessor)}`}
                     className=" text-black text-xs p-1 bg-white rounded-[0.5rem]"
                     value={filters[col.accessor] || ''}
                     onClick={(e) => e.stopPropagation()}
@@ -136,42 +137,25 @@ export function DataTable<T extends Record<string, any>>({
       </thead>
 
       <tbody className=" bg-white text-[#121516] text-[12px] font-serif place-self-center">
-        {filteredAndSortedData.map((row) => {
-          const isSelected = row.id === selectedId
-          return (
-            <tr
-              key={row.id}
-              role="row"
-              tabIndex={0}
-              aria-selected={selectedId === row.id}
-              className={selectedId === row.id ? 'bg-blue-100 outline outline-2 h-[45px] outline-blue-500' : 'cursor-pointer hover:bg-gray-100 h-[45px] focus:outline focus:ring'}
-              onClick={() => onRowClick?.(row)}
-              onKeyDown={(e) => {
-                if (e.key === "Enter") onRowClick?.(row)
-              }}
-            >
-              {columns.map((col, index) => {
-                const isFirst = index === 0
-                const content = String(row[col.accessor])
-
-                return (
-                  <td key={String(col.accessor)}>
-                    {isFirst ? (
-                      <button
-                        ref={isSelected ? selectedRowRef : null}
-                        tabIndex={0}
-                        className="w-full text-left focus:outline-none"
-                      >{content}</button>
-                    ): (
-                      content
-                    )}
-                  </td>
-                )
-              })}
-            </tr>
-          )
-        })}
+      {filteredAndSortedData.map((row) => (
+          <tr
+            key={row.id}
+            role="row"
+            tabIndex={0}
+            ref={selectedRowRef}
+            className="cursor-pointer hover:bg-gray-100 h-[45px] focus:outline focus:ring"
+            onClick={() => onRowClick?.(row)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") onRowClick?.(row)
+            }}
+          >
+            {columns.map((col) => (
+              <td key={String(col.accessor)}>{String(row[col.accessor])}</td>
+            ))}
+          </tr>
+        ))}
       </tbody>
     </table>
   )
 }
+

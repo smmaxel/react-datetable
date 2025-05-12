@@ -1,16 +1,46 @@
 import { useEffect, useState } from "react";
-import { type Issue, fetchIssues, type IssueTableRow } from "~/data/issues";
+import { fetchIssues, type IssueTableRow } from "~/data/issues";
 import { useNavigate } from "react-router";
 import { DataTable } from "~/components/DataTable/DataTable";
 import { mapIssueToTableRows } from "~/utils/issueMapper";
+import { DataSourceInputHeader } from "~/components/DataSourceInputHeader/DataSourceInputHeader";
+import { fetchCustomIssues } from "~/utils/fetchCustomIssues";
 
 export default function Home() {
   const [issues, setIssues] = useState<IssueTableRow[]>([])
+  const [url, setUrl] = useState(
+    typeof window !== 'undefined' ? localStorage.getItem('customDataUrl') || '' : ''
+  )
   const navigate = useNavigate()
 
-  useEffect(() => {
+  //  https://jsonkeeper.com/b/JRFY
+
+  const handleLoad = async (customUrl: string) => {
+    try {
+      const data = await fetchCustomIssues(customUrl)
+      setIssues(mapIssueToTableRows(data))
+      localStorage.setItem('customDataUrl', customUrl)
+      setUrl(customUrl)
+    } catch (error: any) {
+      console.log(error.message)
+    }
+  }
+
+  const handleRest = () => {
+    localStorage.removeItem('customDataUrl')
+    setUrl('')
     fetchIssues().then((data) => setIssues(mapIssueToTableRows(data)))
-  }, [])
+  }
+
+  useEffect(() => {
+    if (url) {
+      fetchCustomIssues(url)
+        .then((data) => setIssues(mapIssueToTableRows(data)))
+        .catch((e) => console.log(e.message))
+    } else {
+      fetchIssues().then((data) => setIssues(mapIssueToTableRows(data)))
+    }
+  }, [url])
 
   const columns = [
     { header: 'NO', accessor: 'no' },
@@ -23,7 +53,7 @@ export default function Home() {
 
   return (
     <main className="p-4">
-      <h1 className="text-xl font-bold mb-4">Issues</h1>
+      <DataSourceInputHeader url={url} onLoad={handleLoad} onReset={handleRest} />
       <DataTable
         columns={columns}
         data={issues}
