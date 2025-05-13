@@ -12,6 +12,7 @@ type SmallCardProps = {
 }
 
 type LargeCardProps = {
+  issueName: string
   isAvailable: boolean
   fallBackMessage: string
   children: ReactNode
@@ -19,16 +20,17 @@ type LargeCardProps = {
 
 const SmallCard = ({ issueName, value }: SmallCardProps) => {
   return (
-    <div className="flex flex-col self-center border p-2 w-[25%]">
+    <div className="flex flex-col self-center border p-2 w-full sm:w-[48%] md:w-[32%] break-words">
       <div className="border-b-2 border-dotted">{issueName}</div>
       <div className="flex self-center p-2">{value}</div>
     </div>
   )
 }
 
-const LargeCard = ({ isAvailable, fallBackMessage, children }: LargeCardProps) => {
+const LargeCard = ({ issueName, isAvailable, fallBackMessage, children }: LargeCardProps) => {
   return (
-    <div className="border w-[50%] p-4">
+    <div className="border p-4 w-full sm:w-[50%]">
+      <div className="border-b-2 border-dotted mb-2">{issueName}</div>
       {isAvailable ? children : (
         <div className="flex justify-center items-center h-full text-gray-500">
           {fallBackMessage}
@@ -63,8 +65,8 @@ export function DataTableDetails({
   */
 
   return (
-    <div className="flex flex-col mt-4">
-      <div className="flex flex-row gap-2 mb-2">
+    <div className="flex flex-col mt-4 space-y-4">
+      <div className="flex flex-col sm:flex-row flex-wrap gap-2 mb-2">
         {item.issueType && (
           <SmallCard issueName="Issue Type" value={item.issueType} />
         )}
@@ -86,19 +88,19 @@ export function DataTableDetails({
         )}
       </div>
 
-      <div className="flex flex-row justify-between gap-2">
-        <LargeCard isAvailable={!!item.codeSnippet} fallBackMessage="Code not available">
+      <div className="flex flex-col sm:flex-row gap-2 items-center">
+        <LargeCard issueName="Code Snippet" isAvailable={!!item.codeSnippet} fallBackMessage="Code not available">
           <pre>{item.codeSnippet}</pre>
         </LargeCard>
 
-        <LargeCard isAvailable={!!item.screenshot} fallBackMessage="Screenshot not available">
+        <LargeCard issueName="Screenshot" isAvailable={!!item.screenshot} fallBackMessage="Screenshot not available">
           <img src={item.screenshot} alt="Issue screenshot" />
         </LargeCard>
       </div>
-      <pre
+      {/* <pre
         className="bg-gray-100 text-black p-2 rounded">
         {JSON.stringify(item, null, 2)}
-      </pre>
+      </pre> */}
     </div>
   )
 }
