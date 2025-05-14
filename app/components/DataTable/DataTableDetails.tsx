@@ -50,20 +50,6 @@ export function DataTableDetails({
     dispatch({ type: 'SELECT_ISSUE', payload: item.id })
   }, [item.id, dispatch])
 
-  /* 
-  {
-    "id": 3,
-    "issueType": "Accessible Name",
-    "severity": "Critical",
-    "component": "AAA",
-    "selector": ".foo#bing > #bar",
-    "url": "https://www.zzzz.co.uk",
-    "description": "Image button lacks accessible name.",
-    "codeSnippet": "<img src='image.png' alt=''>",
-    "screenshot": "https://via.placeholder.com/150"
-  }
-  */
-
   return (
     <div className="flex flex-col mt-4 space-y-4">
       <div className="flex flex-col sm:flex-row flex-wrap gap-2 mb-2">
