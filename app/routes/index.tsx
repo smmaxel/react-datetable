@@ -5,6 +5,7 @@ import { DataTable } from "~/components/DataTable/DataTable";
 import { mapIssueToTableRows } from "~/utils/issueMapper";
 import { DataSourceInputHeader } from "~/components/DataSourceInputHeader/DataSourceInputHeader";
 import { fetchCustomIssues } from "~/utils/fetchCustomIssues";
+import { AccessibilitySwitcher } from "~/components/AccessibilitySwitcher/AccessibilitySwitcher";
 
 export default function Home() {
   const [issues, setIssues] = useState<IssueTableRow[]>([])
@@ -53,7 +54,8 @@ export default function Home() {
 
   return (
     <main className="p-4">
-      <DataSourceInputHeader url={url} onLoad={handleLoad} onReset={handleRest} />
+      <AccessibilitySwitcher />
+      {/* <DataSourceInputHeader url={url} onLoad={handleLoad} onReset={handleRest} /> */}
       <DataTable
         columns={columns}
         data={issues}

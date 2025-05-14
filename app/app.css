@@ -1,15 +1,144 @@
 @import "tailwindcss";
 
-@theme {
-  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif,
-    "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+html {
+  font-family: 'Lato', ui-sans-serif, system-ui;
+  font-size: 16px; /* root font size, 1rem = 16px */
 }
 
-html,
 body {
-  @apply bg-white dark:bg-gray-950;
-
-  @media (prefers-color-scheme: dark) {
-    color-scheme: dark;
-  }
+  background-color: white;
+  color: #131516;
+  color-scheme: light dark;
 }
+
+.normal-contrast {
+  background-color: white;
+  color: black;
+}
+
+.high-contrast {
+  background-color: black;
+  color: white;
+}
+
+
+.high-contrast table thead {
+  background-color: black;
+  color: white;
+}
+
+
+.normal-contrast table thead, .bg-button {
+  background-color: #607085;
+  color: white;
+}
+
+.bg-brand-dark {
+  background-color: #435060;
+}
+
+.text-brand-text {
+  color: #131516;
+}
+
+table thead th {
+  font-family: 'Lato', sans-serif;
+  font-size: 0.75rem;
+  height: 44px;
+  text-transform: uppercase;
+  background-color: #607085;
+  color: #fff;
+}
+
+table thead th input {
+  background-color: #fff;
+  color: #000;
+  height: 35px;
+}
+
+table thead th.bg-brand-dark {
+  background-color: #435060;
+}
+
+table tbody td {
+  font-family: 'Lato', sans-serif;
+  font-size: 0.75rem;
+  height: 44px;
+  color: #131516;
+  background-color: #fff;
+}
+
+table tbody tr {
+  border: thin solid transparent;
+  border-bottom: thin solid #607085;
+}
+
+table tbody tr:focus,
+table tbody tr:hover {
+  border: thin solid #607085;
+}
+
+table tbody tr {
+  transition: background-color 0.2s ease-in-out;
+}
+
+.high-contrast table {
+  border: solid thin #fff;
+}
+
+.high-contrast table thead th,
+.high-contrast table tbody td {
+  background-color: #000;
+  color: #fff;
+}
+
+.high-contrast table tbody tr {
+  border-color: #fff;
+}
+
+.high-contrast table tbody tr:focus,
+.high-contrast table tbody tr:hover {
+  border: medium solid #fff;
+}
+
+.text-base table thead th,
+.text-base table tbody td {
+  font-size: 0.875rem;
+}
+
+.text-sm table thead th,
+.text-sm table tbody td {
+  font-size: 0.75rem;
+}
+
+.link-button {
+  text-decoration: underline;
+  color: blue;
+}
+
+.link-button:hover {
+  color: darkblue;
+}
+
+.link-button:focus-visible {
+  outline: thin solid #000;
+  outline-offset: 0.125rem;
+}
+
+.high-contrast .link-button {
+  color: #fff;
+}
+
+.high-contrast .link-button:focus,
+.high-contrast .link-button:hover {
+  color: #6b7280;
+}
+
+.separator {
+  color: #6b7280;
+}
+
+.high-contrast .separator {
+  color: white;
+}
+

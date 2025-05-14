@@ -97,10 +97,6 @@ export function DataTableDetails({
           <img src={item.screenshot} alt="Issue screenshot" />
         </LargeCard>
       </div>
-      {/* <pre
-        className="bg-gray-100 text-black p-2 rounded">
-        {JSON.stringify(item, null, 2)}
-      </pre> */}
     </div>
   )
 }

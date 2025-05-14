@@ -88,12 +88,14 @@ export function DataTable<T extends Record<string, any>>({
 
   return (
     <>
-      <button
-        className="mb-4 px-4 py-2 bg-blue-500 text-white rounded"
+      {screen.isMobile && (
+        <button
+        className="mb-4 px-4 py-2 bg-button rounded"
         onClick={() => setViewMode(viewMode === 'scroll' ? 'card' : 'scroll')}
       >
         Switch to {viewMode === 'scroll' ? 'Card' : 'Table'}
       </button>
+      )}
 
       {viewMode === 'card' && screen.isMobile && (
         <div className="mb-4">
@@ -148,12 +150,12 @@ export function DataTable<T extends Record<string, any>>({
       {viewMode !== 'card' && (
         <div className="overflow-x-auto">
           <table role="table" className="w-full border-collapse text-center">
-            <thead className="h-[45px] bg-[#607085] text-[12px] uppercase font-serif">
+            <thead className="h-[2.8125rem] text-[0.75rem] uppercase font-sans">
               <tr role="row">
                 {columns.map((col) => (
                   <th
                     key={String(col.accessor)}
-                    className={`cursor-pointer ${sort?.column === col.accessor ? 'bg-[#435060]' : ''
+                    className={`cursor-pointer px-4 sm:px-2 text-nowrap ${sort?.column === col.accessor ? 'bg-brand-dark' : ''
                       }`}
                     onClick={() => toggleSort(col.accessor)}
                   >
@@ -173,7 +175,7 @@ export function DataTable<T extends Record<string, any>>({
                         <input
                           type="text"
                           aria-label={`filter ${String(col.accessor)}`}
-                          className=" text-black text-xs p-1 bg-white rounded-[0.5rem]"
+                          className="p-1 rounded-[0.5rem]"
                           value={filters[col.accessor] || ''}
                           onClick={(e) => e.stopPropagation()}
                           onChange={(e) => updateFilter(col.accessor, e.target.value)}
@@ -185,14 +187,14 @@ export function DataTable<T extends Record<string, any>>({
               </tr>
             </thead>
 
-            <tbody className=" bg-white text-[#121516] text-[12px] font-serif place-self-center">
+            <tbody className="place-self-center">
               {filteredAndSortedData.map((row) => (
                 <tr
                   key={row.id}
                   role="row"
                   tabIndex={0}
                   ref={selectedRowRef}
-                  className="cursor-pointer hover:bg-gray-100 h-[45px] focus:outline focus:ring"
+                  className="cursor-pointer focus-visible:outline-none"
                   onClick={() => onRowClick?.(row)}
                   onKeyDown={(e) => {
                     if (e.key === "Enter") onRowClick?.(row)

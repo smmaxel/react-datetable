@@ -10,6 +10,7 @@ import {
 import type { Route } from "./+types/root";
 import "./app.css";
 import { IssueProvider } from "./context/IssueContext";
+import { AccessibilityProvider, useAccessibility } from "./context/AccessibilityContext";
 
 export const links: Route.LinksFunction = () => [
   { rel: "preconnect", href: "https://fonts.googleapis.com" },
@@ -43,11 +44,29 @@ export function Layout({ children }: { children: React.ReactNode }) {
   );
 }
 
+function AppContent() {
+  const { highContrast, fontSize } = useAccessibility()
+
+  const className = `
+    min-h-screen
+    ${highContrast ? 'high-contrast' : 'normal-contrast'}
+    ${fontSize === 'large' ? 'text-base' : 'text-sm'}
+  `
+
+  return (
+    <div className={className}>
+      <Outlet />
+    </div>
+  )
+}
+
 export default function App() {
   return (
-    <IssueProvider>
-      <Outlet />
-    </IssueProvider>
+    <AccessibilityProvider>
+      <IssueProvider>
+        <AppContent />
+      </IssueProvider>
+    </AccessibilityProvider>
   )
 }
 
