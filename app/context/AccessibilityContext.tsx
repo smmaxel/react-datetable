@@ -34,7 +34,10 @@ export const AccessibilityProvider = ({ children }: AccessibilityProviderProps) 
     }
 
     const params = new URLSearchParams(window.location.search)
-    const hcParam = params.get('contrast') === 'high'
+    const hcParam = 
+      (params.get('contrast')) === 'high' ||
+      localStorage.getItem('highContrast') === 'true' ||
+      false
     const fcParam = 
       (params.get('font') as FontSize) ||
       (localStorage.getItem('fontSize') as FontSize) ||
@@ -63,21 +66,6 @@ export const AccessibilityProvider = ({ children }: AccessibilityProviderProps) 
 
     navigate({ search: params.toString() }, { replace: true })
   }
-
-  useEffect(() => {
-    if (typeof window !== 'undefined') {
-      const highContrastVal = localStorage.getItem('highContrast')
-      const fontSizeVal = localStorage.getItem('fontSize')
-
-      if (highContrastVal) {
-        setHighContrast(Boolean(highContrastVal))
-      }
-
-      if (fontSizeVal) {
-        setFontSize(fontSizeVal as FontSize)
-      }
-    }
-  }, [])
 
   useEffect(() => {
     localStorage.setItem('highContrast', highContrast.toString())
