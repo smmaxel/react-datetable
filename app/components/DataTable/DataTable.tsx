@@ -83,10 +83,11 @@ export function DataTable<T extends Record<string, any>>({
   }, [data, filters, sort])
 
   useEffect(() => {
-    if (selectedRowRef.current) {
+    if (selectedId && selectedRowRef.current) {
       selectedRowRef.current.focus()
     }
-  }, [selectedId])
+
+  }, [selectedId, selectedRowRef.current, filteredAndSortedData])
 
   return (
     <>
@@ -188,23 +189,26 @@ export function DataTable<T extends Record<string, any>>({
             </thead>
 
             <tbody className="place-self-center">
-              {filteredAndSortedData.map((row) => (
-                <tr
-                  key={row.id}
-                  role="row"
-                  tabIndex={0}
-                  ref={selectedRowRef}
-                  className="cursor-pointer focus-visible:outline-none"
-                  onClick={() => onRowClick?.(row)}
-                  onKeyDown={(e) => {
-                    if (e.key === "Enter") onRowClick?.(row)
-                  }}
-                >
-                  {columns.map((col) => (
-                    <td key={String(col.accessor)}>{String(row[col.accessor])}</td>
-                  ))}
-                </tr>
-              ))}
+              {filteredAndSortedData.map((row) => {
+                const isSelected = row.id === selectedId
+                return (
+                  <tr
+                    key={row.id}
+                    role="row"
+                    tabIndex={0}
+                    ref={isSelected ? selectedRowRef : null}
+                    className="cursor-pointer focus-visible:outline-none"
+                    onClick={() => onRowClick?.(row)}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter") onRowClick?.(row)
+                    }}
+                  >
+                    {columns.map((col) => (
+                      <td key={String(col.accessor)}>{String(row[col.accessor])}</td>
+                    ))}
+                  </tr>
+                )
+              })}
             </tbody>
           </table>
         </div>
