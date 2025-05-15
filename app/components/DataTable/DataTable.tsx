@@ -2,6 +2,8 @@ import { useEffect, useMemo, useRef, useState, type SelectHTMLAttributes } from 
 import { useIssueContext } from "~/context/IssueContext"
 import { useScreenSize } from "~/hooks/useScreenSize"
 import { useViewMode } from "~/hooks/useViewMode"
+import { ChevronDown, ChevronUp, ChevronsUpDown } from "lucide-react"
+
 
 type Column<T> = {
   header: string
@@ -150,7 +152,7 @@ export function DataTable<T extends Record<string, any>>({
       {viewMode !== 'card' && (
         <div className="overflow-x-auto">
           <table role="table" className="w-full border-collapse text-center">
-            <thead className="h-[2.8125rem] text-[0.75rem] uppercase font-sans">
+            <thead className="h-[2.8125rem] uppercase font-sans">
               <tr role="row">
                 {columns.map((col) => (
                   <th
@@ -162,12 +164,10 @@ export function DataTable<T extends Record<string, any>>({
                     <div className="flex items-center justify-center gap-2 select-none">
                       <div className="flex items-center gap-1">
                         <span>{col.header}</span>
-                        <span className="text-sm">
+                        <span>
                           {sort?.column === col.accessor ? (
-                            <span className="text-sm">
-                              {sort.direction === 'asc' ? '\u21E7' : '\u21E9'}
-                            </span>
-                          ) : '\u21F3'}
+                              sort.direction === 'asc' ? <ChevronUp size={16} /> : <ChevronDown size={16} />
+                          ) : <ChevronsUpDown size={16} />}
                         </span>
                       </div>
 
