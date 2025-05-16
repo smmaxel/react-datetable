@@ -89,6 +89,12 @@ export function DataTable<T extends Record<string, any>>({
 
   }, [selectedId, selectedRowRef.current, filteredAndSortedData])
 
+  useEffect(() => {
+    if (!screen.isMobile) {
+      setViewMode('scroll')
+    }
+  }, [screen.isMobile])
+
   return (
     <>
       {screen.isMobile && (
@@ -101,7 +107,8 @@ export function DataTable<T extends Record<string, any>>({
       )}
 
       {viewMode === 'card' && screen.isMobile && (
-        <div className="mb-4">
+        <div className="flex flex-col">
+          <div className="mb-4">
           <label htmlFor="sort-select" className="mr-2 text-sm font-semibold">Sort by:</label>
           <select
             id="sort-select"
@@ -126,9 +133,13 @@ export function DataTable<T extends Record<string, any>>({
               className="ml-2 text-sm underline text-blue-600"
               onClick={() => toggleSort(sort.column)}
             >
-              {sort.direction === 'asc' ? 'ASC \u21E7' : 'Desc \u21E9'}
+              {sort.direction === 'asc' ? 
+                (<span className="flex flex-row items-center">ASC<ChevronUp className="ml-1" size={16} /></span>) :
+                (<span className="flex flex-row items-center">DESC <ChevronDown className="ml-1" size={16} /></span>)
+              }
             </button>
           )}
+          </div>
           <div className="space-y-4">
             {filteredAndSortedData.map((row) => (
               <div
