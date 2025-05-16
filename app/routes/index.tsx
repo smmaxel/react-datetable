@@ -54,8 +54,12 @@ export default function Home() {
 
   return (
     <main className="p-4">
-      <AccessibilitySwitcher />
-      {/* <DataSourceInputHeader url={url} onLoad={handleLoad} onReset={handleRest} /> */}
+      <div className="flex flex-row justify-between">
+        <AccessibilitySwitcher />
+        <DataSourceInputHeader url={url} onLoad={handleLoad} onReset={handleRest} />
+      </div>
+      
+      
       <DataTable
         columns={columns}
         data={issues}

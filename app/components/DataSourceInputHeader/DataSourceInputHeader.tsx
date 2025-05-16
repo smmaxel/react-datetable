@@ -26,8 +26,6 @@ const [inputUrl, setInputUrl] = useState(url)
 
   return (
     <header className="flex flex-row justify-between items-center h-[2rem] mb-1">
-      <h1>Issues</h1>
-      
       <div className="flex flex-row gap-2 items-center">
         <button 
           className="text-sm cursor-pointer"

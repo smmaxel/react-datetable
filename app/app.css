@@ -142,3 +142,48 @@ table tbody tr {
   color: white;
 }
 
+.input {
+  font-family: 'Lato', sans-serif;
+  font-size: 0.875rem;
+  padding: 0.25rem 0.5rem;
+  border: thin solid #607085;
+  border-radius: 0.5rem;
+  background-color: #fff;
+  color: #131516;
+}
+
+.btn {
+  font-size: 0.875rem;
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.5rem;
+  color: #fff;
+  cursor: pointer;
+}
+
+.bg-button {
+  background-color: #607085;
+}
+
+.bg-gray-button {
+  background-color: #9ca3af;
+}
+
+.bg-muted {
+  background-color: #f3f4f6;
+}
+
+.high-contrast .bg-muted {
+  background-color: #000;
+  color: #fff;
+}
+
+.high-contrast .btn {
+  background-color: black;
+  color: #fff;
+}
+
+.high-contrast .input {
+  background-color: #000;
+  color: #fff;
+  border-color: #fff;
+}

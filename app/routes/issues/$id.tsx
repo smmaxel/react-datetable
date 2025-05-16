@@ -47,7 +47,6 @@ export default function IssueDetails() {
   return (
     <main className="p-4">
       <BreadCrumbs id={issue.id} issueType={issue.issueType} navigate={navigate} />
-
       <DataTableDetails item={issue} />
     </main>
   )
