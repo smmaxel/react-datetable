@@ -7,11 +7,11 @@ const breakpoints = {
 }
 
 export function useScreenSize() {
-  const [width, setWidth] = useState<number>(
-    typeof window !== 'undefined' ? window.innerWidth : 0
-  )
+  const [width, setWidth] = useState<number>(0)
 
   useEffect(() => {
+    setWidth(window.innerWidth)
+
     const handleResize = () => {
       setWidth(window.innerWidth)
     }
@@ -22,6 +22,15 @@ export function useScreenSize() {
       window.removeEventListener('resize', handleResize)
     }
   }, [])
+
+  if (width === 0) {
+    return {
+      isMobile: false,
+      isTablet: false, 
+      isLaptop: false,
+      isDesktop: false
+    }
+  }
   
   return {
     isMobile: width < breakpoints.tablet,
