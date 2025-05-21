@@ -85,7 +85,7 @@ export function DataTable<T extends Record<string, any>>({
   }, [data, filters, sort])
 
   const clearFocus = () => {
-    if (selectedId && selectedRowRef.current) {
+    if (selectedId !== null && selectedRowRef.current) {
       selectedRowRef.current.blur()
     }
   }
@@ -99,7 +99,7 @@ export function DataTable<T extends Record<string, any>>({
   }
 
   useEffect(() => {
-    if (selectedId && selectedRowRef.current) {
+    if (selectedId !== null && selectedRowRef.current) {
       selectedRowRef.current.focus()
     }
 
