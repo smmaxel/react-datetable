@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState, type SelectHTMLAttributes } from "react"
+import { useEffect, useMemo, useRef, useState } from "react"
 import { useIssueContext } from "~/context/IssueContext"
 import { useScreenSize } from "~/hooks/useScreenSize"
 import { useViewMode } from "~/hooks/useViewMode"
@@ -38,6 +38,8 @@ export function DataTable<T extends Record<string, any>>({
 
   const selectedRowRef = useRef<HTMLTableRowElement>(null)
   const screen = useScreenSize()
+
+  const navigationKeys = new Set(['Enter', ' '])
 
   const toggleSort = (column: keyof T) => {
     setSort((prev) => {
@@ -81,6 +83,20 @@ export function DataTable<T extends Record<string, any>>({
 
     return result
   }, [data, filters, sort])
+
+  const clearFocus = () => {
+    if (selectedId && selectedRowRef.current) {
+      selectedRowRef.current.blur()
+    }
+  }
+
+  const handleTableNavigation = (row: T) => (e: React.KeyboardEvent) => {
+    clearFocus()
+    if (navigationKeys.has(e.key)) {
+      e.preventDefault()
+      onRowClick?.(row)
+    }
+  }
 
   useEffect(() => {
     if (selectedId && selectedRowRef.current) {
@@ -131,7 +147,7 @@ export function DataTable<T extends Record<string, any>>({
           {sort && (
             <button
               className="ml-2 text-sm underline text-blue-600"
-              onClick={() => toggleSort(sort.column)}
+              onClick={() => toggleSort(sort.column)} 
             >
               {sort.direction === 'asc' ? 
                 (<span className="flex flex-row items-center">ASC<ChevronUp className="ml-1" size={16} /></span>) :
@@ -210,9 +226,8 @@ export function DataTable<T extends Record<string, any>>({
                     ref={isSelected ? selectedRowRef : null}
                     className="cursor-pointer focus-visible:outline-none"
                     onClick={() => onRowClick?.(row)}
-                    onKeyDown={(e) => {
-                      if (e.key === "Enter") onRowClick?.(row)
-                    }}
+                    onKeyDown={handleTableNavigation(row)}
+                    onMouseEnter={clearFocus}
                   >
                     {columns.map((col) => (
                       <td key={String(col.accessor)}>{String(row[col.accessor])}</td>
