@@ -106,7 +106,7 @@ export function DataTable<T extends Record<string, any>>({
   }, [selectedId, selectedRowRef.current, filteredAndSortedData])
 
   useEffect(() => {
-    if (!screen.isMobile) {
+    if (!screen.isMobile && viewMode === 'card') {
       setViewMode('scroll')
     }
   }, [screen.isMobile])
@@ -157,22 +157,27 @@ export function DataTable<T extends Record<string, any>>({
           )}
           </div>
           <div className="space-y-4">
-            {filteredAndSortedData.map((row) => (
-              <div
-                key={row.id}
-                role="button"
-                tabIndex={0}
-                onClick={() => onRowClick?.(row)}
-                onKeyDown={(e) => e.key === 'Enter' && onRowClick?.(row)}
-                className="p-4 border roujnded-md bg-white text-black shadow focus:outline focus:ring"
-              >
-                {columns.map((col) => (
-                  <p key={String(col.accessor)} className="text-sm">
-                    <strong>{col.header}: </strong>{String(row[col.accessor])}
-                  </p>
-                ))}
-              </div>
-            ))}
+            {filteredAndSortedData.map((row) => {
+              const isSelected = row.id === selectedId
+              return (
+                <div
+                  key={row.id}
+                  role="button"
+                  tabIndex={0}
+                  ref={isSelected ? selectedRowRef : null}
+                  onClick={() => onRowClick?.(row)}
+                  onKeyDown={handleTableNavigation(row)}
+                  onMouseEnter={clearFocus}
+                  className="p-4 border roujnded-md shadow focus:outline focus:ring"
+                >
+                  {columns.map((col) => (
+                    <p key={String(col.accessor)} className="text-sm">
+                      <strong>{col.header}: </strong>{String(row[col.accessor])}
+                    </p>
+                  ))}
+                </div>
+              )
+            })}
           </div>
         </div>
       )}
